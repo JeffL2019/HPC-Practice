@@ -57,7 +57,6 @@ int main(int argc, char **argv) {
     // Start ping pong
     // Test message size from 1B, 2B, 4B, ..., up to 4MB
     for (int bytes = 1; bytes <= MAX_BYTES; bytes *= 2) {
-        // 50 iterations for messages larger than 64KB
         int iters = (bytes <= 65536) ? 10000 : 50;
 
         // create barrier so all ranks are ready
@@ -80,9 +79,8 @@ int main(int argc, char **argv) {
                 MPI_Recv(buf, bytes, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             } else {
                 // PONG: wait for rank 0's message, then send it right back.
-                // Note the order is reversed vs. rank 0 (receive first, then send).
-                // If both ranks called MPI_Send first, large messages could
-                // deadlock: each would wait for the other to receive.
+                // Order is reversed (receive first, then send).
+                // If both ranks called MPI_Send first, result would be a deadlock
                 MPI_Recv(buf, bytes, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 MPI_Send(buf, bytes, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
             }
