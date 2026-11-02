@@ -5,6 +5,8 @@
  * Timing many of these round trips tells us:
  *   - latency: how long one small message takes to arrive
  *   - bandwidth: how much data per second the network can move
+ *
+ * Walkthrough: https://youtu.be/qQQevJFSDk0?si=xRsYFJe0J5j0_FOP
  */
 
  #include <mpi.h> // MPI functions and types (MPI_Init, MPI_Send, MPI_Recv)
